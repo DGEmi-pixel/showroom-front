@@ -1,0 +1,24 @@
+:root
+{
+    --color-background: #ecf0f1;
+    --color-primary: #3438cd;
+
+
+    --background-dark: #333;
+    --text-dark: #fff;
+
+
+    /*TOAST*/
+    --toast-success: #27ae60;
+    --toast-info: #273c75;
+    --toast-error: #EA2027;
+
+    --bg-downriver-50: #f0f5fe;
+    --text-downriver-600: #0c56ff;
+    --text-downriver-950: #0e1d54;
+}
+
+body {
+    /* background-color: var(--background); */
+    color: var(--text);
+}

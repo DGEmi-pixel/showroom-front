@@ -1,0 +1,26 @@
+.custom-swal {
+    width: 400px !important; /* Ancho personalizado */
+    height: 200px !important; /* Alto personalizado */
+}
+
+.custom-swal-title {
+    font-size: 18px;
+}
+
+.custom-swal-text {
+    font-size: 16px;
+}
+
+.custom-swal-text-span {
+    font-weight: bold;
+}
+
+.custom-swal-icon {
+    font-size: 20px;
+    width: 15px;
+    height: 15px;
+}
+
+.custom-swal-confirm-button {
+    background-color: #ff4757; /* Color del botón de confirmación */
+}

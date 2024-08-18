@@ -2,32 +2,182 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+/* @import url('../styles/colors.css'); */
+@import url('../styles//animations.css');
+
+
+/*TODO: Eliminar Arrows/Spinner de los input*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+/*TODO: TextArea Estilos para los scrollbar*/
+textarea::-webkit-scrollbar {
+    width: 5px;
+}
+
+textarea::-webkit-scrollbar-track {
+    background-color: #1e1e1e;
+    border-radius: 15px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+    background-color: #1e90ff;
+    border-radius: 15px;
+}
+
+/* Firefox */
+input[type=number], input[type=checkbox] {
+    appearance: none;
+    -moz-appearance: textfield;
+}
+
+/* Añadir estilos personalizados */
+.clip-circle {
+    clip-path: circle(600px at right 900px);
+}
+
+.shadow-outline-blue {
+    box-shadow: 0 0 0 2px #fff,
+        0 0 0 4px #0071c7;
+}
+
+.shadow-outline-pink {
+    box-shadow: 0 0 0 2px #fff,
+        0 0 0 4px #FA1795;
+}
+
+.shadow-outline-yellow {
+    box-shadow: 0 0 0 2px #fff,
+        0 0 0 4px #F5DA00;
+}
+
+
+/* Aañadir Degradados especiales */
+.conic-gradient {
+    background-image: radial-gradient(circle, #E50914, #221f1f);
+    /* Ajusta los parámetros del gradiente según tus necesidades */
+}
+
+
+/* styles.css */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -45%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+  
+@keyframes modalFadeOut {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -45%);
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.ModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 300ms ease-in-out;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.ModalContent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  animation-duration: 300ms;
+  animation-fill-mode: forwards;
 }
+
+.ModalContent--after-open {
+  animation-name: modalFadeIn;
+}
+
+.ModalContent--before-close {
+  animation-name: modalFadeOut;
+}
+  
+
+
+  /*DESDE OTRO LAS*/
+@import url('../styles/colors.css');
+@import url('../styles/animations.css');
+
+
+/*TODO: Eliminar Arrows/Spinner de los input*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+/*TODO: TextArea Estilos para los scrollbar*/
+textarea::-webkit-scrollbar {
+    width: 5px;
+}
+
+textarea::-webkit-scrollbar-track {
+    background-color: #1e1e1e;
+    border-radius: 15px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+    background-color: #1e90ff;
+    border-radius: 15px;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* Añadir estilos personalizados */
+.clip-circle {
+    clip-path: circle(600px at right 900px);
+}
+
+.shadow-outline-blue {
+    box-shadow: 0 0 0 2px #fff,
+        0 0 0 4px #0071c7;
+}
+
+.shadow-outline-pink {
+    box-shadow: 0 0 0 2px #fff,
+        0 0 0 4px #FA1795;
+}
+
+.shadow-outline-yellow {
+    box-shadow: 0 0 0 2px #fff,
+        0 0 0 4px #F5DA00;
+}
+
+
+/* Aañadir Degradados especiales */
+
+.conic-gradient {
+    background-image: radial-gradient(circle, #E50914, #221f1f);
+    /* Ajusta los parámetros del gradiente según tus necesidades */
+}
+
