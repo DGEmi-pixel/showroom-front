@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @import url('../styles/colors.css'); */
-@import url('../styles//animations.css');
-
 
 /*TODO: Eliminar Arrows/Spinner de los input*/
 input::-webkit-outer-spin-button,
