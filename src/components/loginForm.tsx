@@ -31,7 +31,7 @@ export const LoginForm: React.FC<({setLoadingSpinner: (loading: boolean) => void
             const resServ = await auth(loginData)
             
             if(typeof resServ === 'string'){
-                window.location.href = 'http://localhost:3000/dashboard/products';
+                window.location.href = 'https://showroom-front-2.onrender.com/dashboard/products';
             } else if(resServ.statusCode === 404) {
                 toast.error(resServ.message)
             } else {

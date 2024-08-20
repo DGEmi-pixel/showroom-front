@@ -7,7 +7,7 @@ const authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjRhN2YyNGM1
 
 // INSTANCIA
 export const axiosJsonInstance  = axios.create({
-    baseURL: 'https://showroom-back.onrender.com',
+    baseURL: 'https://showroom-back.onrender.com/api',
     headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${authToken}` // Incluye el token en los headers
@@ -15,7 +15,7 @@ export const axiosJsonInstance  = axios.create({
 })
 
 export const axiosMultipartInstance = axios.create({
-    baseURL: 'https://showroom-back.onrender.com',
+    baseURL: 'https://showroom-back.onrender.com/api',
     headers: {
         'Content-Type': 'multipart/form-data',
         'Authorization': `Bearer ${authToken}` // Incluye el token en los headers
