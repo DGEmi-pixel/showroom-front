@@ -14,7 +14,6 @@ import { modalSchema } from '@/schemas/form.schema';
 import { InputWithLabel } from "@/components/input"
 import { modalConfig } from '@/helpers/inputConfig.helpers';
 
-
 //HOOKS
 import { useShowroomHook } from '@/hooks/showroom.hook'
 import { useUserHook } from '@/hooks/user.hook';
@@ -22,33 +21,18 @@ import { useUserHook } from '@/hooks/user.hook';
 //[ ] LOGOUT
 import { useAuthHook } from '@/hooks/auth.hook'
 
-//MENU SIDEBAR
+//[ ] MENU SIDEBAR
 import { MenuSidebar } from '@/components/menuSidebar';
 
 //[ ] CONTEXT
 import { useAuth } from '@/context/auth.context';
 
-//[ ]NOTIFY
+//[ ] NOTIFY
 import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
 
-const customStyles = {
-    content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        outline: 'none',
-        marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-        background: 'white',
-        borderRadius: '10px',
-        padding: '20px',
-        transition: 'transform 300ms ease-in-out',
-        width: '550px',
-        height: '400px'
-    },
-};
+//[ ] SPINNER
+import { Spinner } from '@/components/spinner';
 
 export default function DashboardProfile() {
 
@@ -66,10 +50,6 @@ export default function DashboardProfile() {
     const methods = useForm<ModalFormValues>({ resolver: yupResolver(modalSchema) })
 
     const [modalIsOpen, setIsOpen] = useState(false);
-    const [submitEnabled, setSubmitEnabled] = useState(false)
-    
-    //[ ] WATCH DE REACT-FORM PARA ESCUCHAR LOS EVENTOS DE LOS INPUTS
-    const watchAllFields = methods.watch();
     
     //[ ] SECCIONES DEL FORMULARIO 
     const [sectionID, setSectionID] = useState(0) 
@@ -84,6 +64,26 @@ export default function DashboardProfile() {
     }
 
     const [modalTitle, setModalTitle] = useState<string>("") //[ ] TÍTULO DEL MODAL
+    const [modalSize, setModalSize] = useState({width: '550px', height: '400px'}) //[ ] ALTURA DEL MODAL
+
+    //[ ] MODAL STYLES
+    const customStyles = {
+        content: {
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            outline: 'none',
+            marginRight: '-50%',
+            transform: 'translate(-50%, -50%)',
+            background: 'white',
+            borderRadius: '10px',
+            padding: '20px',
+            transition: 'transform 300ms ease-in-out',
+            width: modalSize.width || '550px',
+            height: modalSize.height || '400px'
+        },
+    };
 
     const [modalData, setModalData] = useState({
         name: '',
@@ -115,15 +115,19 @@ export default function DashboardProfile() {
 
     function openModal(sectionID: number) {
         setIsOpen(true);
+        let modalSize = ({width: '', height: ''})
 
         switch(sectionID) {
             case 1:
-            setModalTitle("Información Personal")
+                modalSize.height = '400px'
+                setModalTitle("Información Personal")
             break;
         case 2:
+            modalSize.height = '300px'
             setModalTitle("Dirección")
             break;
         case 3:
+            modalSize.height = '300px'
             setModalTitle("Información Adicional")
             break;
         default:
@@ -149,13 +153,14 @@ export default function DashboardProfile() {
             userModalData.email = user.email
             userModalData.lastName = user.lastName
             userModalData.username = user.username
-            userModalData.password = '**********'
+            userModalData.password = ''
             userModalData.logoUrl = user.logoUrl
 
             setUserModalData(userModalData)
         }
 
         setSectionID(sectionID)
+        setModalSize(modalSize)
     }
 
     function closeModal() {
@@ -166,24 +171,38 @@ export default function DashboardProfile() {
 
     //[ ] ENVÍO DEL FORMULARIO
     const submitForm = async () => {
-        if (sectionID !== 1 && Object.keys(methods.formState.errors).length === 0) {
+
+        const fieldsToValidate: ('name' | 'lastName' | 'email' | 'password' | 'repeatPassword')[] = ['name', 'lastName', 'email'];
+
+        if(userModalData.password){
+            fieldsToValidate.push('password', 'repeatPassword')
+        }
+
+        const personalInfIsValid = await methods.trigger(fieldsToValidate)
+        const addressIsValid = await methods.trigger(['country', 'city', 'postalCode', 'phoneNumber'])
+        const brandIsValid = await methods.trigger(['showroomName', 'titleAbout', 'description', 'historyAbout'])
+
+        if(sectionID === 2 && addressIsValid){
+            //[ ] CLOSE MODAL
+            closeModal()
+            
             try {
-                //[ ] ACTUALIZAMOS EL VALOR DEL NOMBRE DEL SHOWROOM
+                //[ ]ACTUALIZAMOS EL VALOR DEL NOMBRE DEL SHOWROOM
                 modalData.name = modalData.showroomName
                 const resServ = await updateShowRoom(modalData, idShowroom)
+
                 if(resServ.error === false){
                     toast.info(resServ.message)
                 } else {
                     toast.error(resServ.message)
                 }
-
-                if(!showroomError){
-                    setShowroom(modalData)
-                } else { alert (showroomError) }
             } catch (error) {
                 console.error('Error updating showroom:', error);
             }
-        } else if(sectionID === 1 && Object.keys(methods.formState.errors).length === 0) {
+        } else if(sectionID === 1 && personalInfIsValid){
+            //[ ] CLOSE MODAL
+            closeModal()
+
             try {
                 const resServ = await updateUser(userModalData, userId)
                 if(resServ.error === false){
@@ -191,17 +210,26 @@ export default function DashboardProfile() {
                 } else {
                     toast.error(resServ.message)
                 }
-
-                if(!userError){
-                    setUser(userModalData)
-                } else { alert (userError) }
             } catch (error) {
                 console.error('Error updating user:', error);
             }
-        }
+        } else if(sectionID === 3 && brandIsValid){
+             //[ ] CLOSE MODAL
+            closeModal()
+            try {
+                //[ ]ACTUALIZAMOS EL VALOR DEL NOMBRE DEL SHOWROOM
+                modalData.name = modalData.showroomName
+                const resServ = await updateShowRoom(modalData, idShowroom)
 
-        //[ ] CLOSE MODAL
-        closeModal()
+                if(resServ.error === false){
+                    toast.info(resServ.message)
+                } else {
+                    toast.error(resServ.message)
+                }
+            } catch (error) {
+                console.error('Error updating showroom:', error);
+            }
+        }
     }
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -227,14 +255,9 @@ export default function DashboardProfile() {
             setDescriptionCardHeight(descriptionHeight)
             setHistoryCardHeight(historyHeight)
         }
+        console.log(showroom)
         Modal.setAppElement('#rootmodal')
-
-        if(Object.keys(methods.formState.errors).length === 0) {
-            setSubmitEnabled(false)
-        } else {
-            setSubmitEnabled(true)
-        }
-    }, [showroom, showroom?.description, showroom?.historyAbout, methods.formState.errors, watchAllFields])
+    }, [showroom, showroom?.description, showroom?.historyAbout])
 
     return(
         
@@ -265,11 +288,11 @@ export default function DashboardProfile() {
                         <MenuSidebar logout={logout} openModal={openModal} linkActive={0} />
                     </aside>
 
-                     {/* MAIN */}
                     <div className='mt-[1.8rem] ml-[220px] bg-box_1-secondary'>
                         <div className='flex flex-col flex-wrap w-[100vw] h-dashboard-main-height ml-[20px] py-4 px-6 bg-white rounded-2xl transition-all duration-300 ease-in-out'>
                             <h1 className='font-800 text-[1.7rem]'> Mi Perfil</h1>
                             
+                            {/* [ ] MODAL */}
                             <Modal
                                 isOpen={modalIsOpen}
                                 onRequestClose={closeModal}
@@ -281,10 +304,10 @@ export default function DashboardProfile() {
                                     beforeClose: 'ModalContent--before-close',
                                 }}
                                 closeTimeoutMS={300}
-                                contentLabel="Example Modal"
+                                contentLabel="Profile Modal"
                             >
                                 
-                                <h2 className='text-dashboard-color-primary font-bold text-[18px] ml-[35px]'>{modalTitle}</h2>
+                                <h2 className='text-box_1-text_primary font-bold text-[18px] ml-[35px]'>{modalTitle}</h2>
                                 <FormProvider {...methods}>
                                     <form className='relative' onSubmit={(e) => {
                                         e.preventDefault()
@@ -295,22 +318,22 @@ export default function DashboardProfile() {
                                             {sectionID === 1 ? (
                                             <>
                                                 <div className='flex flex-wrap'>
-                                                    <div className='px-2'>
+                                                    <div className='px-2 mt-[10px]'>
                                                         <InputWithLabel event={handleInputChange} {...modalConfig.name} type='text' value={userModalData.name} />
                                                     </div>
-                                                    <div className='px-2'>
+                                                    <div className='px-2 mt-[10px]'>
                                                         <InputWithLabel event={handleInputChange} {...modalConfig.lastName} type='text' value={userModalData.lastName} />
                                                     </div>
-                                                    <div className='px-2'>
+                                                    <div className='px-2 mt-[10px]'>
                                                         <InputWithLabel event={handleInputChange} {...modalConfig.username} type='text' value={userModalData.username}  />
                                                     </div>
-                                                    <div className='px-2'>
+                                                    <div className='px-2 mt-[10px]'>
                                                         <InputWithLabel event={handleInputChange} {...modalConfig.email} type='email' value={userModalData.email} />
                                                     </div> 
-                                                    <div className='px-2'>
+                                                    <div className='px-2 mt-[10px]'>
                                                         <InputWithLabel event={handleInputChange} {...modalConfig.password} type='password' value={userModalData.password} />
                                                     </div>
-                                                    <div className='px-2'>
+                                                    <div className='px-2 mt-[10px]'>
                                                         <InputWithLabel event={handleInputChange} {...modalConfig.repeatPassword} type='password' />
                                                     </div>
                                                 </div>
@@ -328,7 +351,7 @@ export default function DashboardProfile() {
                                                     <div className='px-2'>
                                                         <InputWithLabel event={handleInputChange} {...modalConfig.postalCode} type='text' value={modalData.postalCode}  />
                                                     </div>
-                                                    <div className='px-2'>
+                                                    <div className='px-2 mb-[30px]'>
                                                         <InputWithLabel event={handleInputChange} {...modalConfig.phoneNumber} type='text' value={modalData.phoneNumber} />
                                                     </div> 
                                                 </div>
@@ -345,7 +368,7 @@ export default function DashboardProfile() {
                                                     <div className='px-2'>
                                                         <InputWithLabel event={handleInputChange} {...modalConfig.description} type='text' value={modalData.description}  />
                                                     </div>
-                                                    <div className='px-2'>
+                                                    <div className='px-2 mb-[30px]'>
                                                         <InputWithLabel event={handleInputChange} {...modalConfig.historyAbout} type='text' value={modalData.historyAbout} />
                                                     </div> 
                                                 </div>
@@ -355,21 +378,19 @@ export default function DashboardProfile() {
                                         
                                         <FontAwesomeIcon
                                             onClick={closeModal}
-                                            className='absolute top-[-50px] right-[-24px] text-[27px] 
+                                            className='absolute top-[-50px] right-[-28px] text-[30px] 
                                             text-dashboard-color-danger cursor-pointer'
                                             icon={faXmarkCircle}>
                                             
                                         </FontAwesomeIcon>
-                                        <button type="submit" disabled={submitEnabled}
-                                            className='absolute bottom-[-85px] right-[30%] w-[160px] py-[12px] text-[16px] rounded-[3px] uppercase tracking-[1.5px] text-center font-bold bg-dashboard-color-white shadow-dashboard-modal-button-shadow
-                                            before:absolute before:top-0 before:left-1/2 before:right-1/2 before:bottom-0 before:opacity-0 before:bg-dashboard-color-primary before:transition-all before:rounded-[3px] before:duration-[0.4s] before:ease-in-out    
-                                            z-[-2]
-                                            hover:before:left-0 hover:before:right-0 hover:before:opacity-100 hover:before:text-dashboard-color-white
-                                            focus:before:left-0 focus:before:right-0 focus:before:opacity-100 focus:before:text-dashboard-color-white
-                                            '>
+                                        <button 
+                                            type="submit"
+                                            className={`absolute ${sectionID !== 1 ? 'bottom-[-20px]' : 'bottom-[-120px]'} left-[180px] w-[160px] py-[12px] text-[16px] rounded-[3px] uppercase tracking-[1.5px] text-center font-bold bg-dashboard-color-white shadow-dashboard-modal-button-shadow
+                                            hover:bg-box_1-text_primary hover:text-box_1-primary transition-colors ease-linear duration-150
+                                            `}>
                                             <span className='z-[100]
                                             before:absolute before:top-0 before:left-1/2 before:right-1/2 before:bottom-0 before:opacity-0 before:bg-dashboard-color-primary before:transition-all before:rounded-[3px] before:duration-[0.4s] before:ease-in-out'>
-                                                Actualizar
+                                                Enviar
                                             </span>
                                         </button>
                                     </form>
@@ -377,10 +398,18 @@ export default function DashboardProfile() {
                                 
                             </Modal>
 
-                            {/* START */}
-                            <div className='flex justify-between ml-[5px] mt-[50px] w-[350px] h-[120px] border-[1px] border-solid border-gray-300 rounded-xl'>
+                            {/* Inicio */}
+                            <div style={{boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;'}} className='flex justify-between ml-[5px] mt-[50px] w-[350px] h-[120px] border-[1px] border-solid border-box_1-secondary rounded-xl'>
                                 <div className='flex items-center ml-[15px]'>
-                                    <Image src={logo} alt='logo picture' className='w-[50px] h-[50px]'></Image>
+                                    { user &&
+                                        <Image
+                                            alt='Profile logo'
+                                            src={user.logoUrl}
+                                            width={100} 
+                                            height={100}
+                                            className='block w-[100px] h-[100px] rounded-[12px]'>
+                                        </Image>
+                                    }
                                     <div className='flex flex-col ml-[16px]'>
                                         <h3 className='font-[800] text-[17px]'>{user?.name } {user?.lastName}</h3>
                                         <p className='text-dashboard-color-info-dark'>Administrador</p>
@@ -388,51 +417,51 @@ export default function DashboardProfile() {
                                 </div>
                             </div>
                             
-                            { /* more info personal information */}
-                            <div className='ml-[5px] mt-[50px] w-[700px] h-max border-[1px] border-solid border-gray-300 rounded-xl'>
+                            { /* Información Personal */}
+                            <div style={{boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;'}} className='ml-[5px] mt-[50px] w-[700px] h-max border-[1px] border-solid border-box_1-secondary rounded-xl'>
                                 <div className='flex justify-between mt-[20px] ml-[15px]'>
                                     <h3 className='font-[800] text-[17px]'>Información Personal</h3>
-                                    <div onClick={() => openModal(1)} className='flex flex-row px-3 py-2 my-auto mr-[20px] border-[1px] border-solid border-gray-300 rounded-3xl cursor-pointer'>
-                                        <p className='px-2'>Edit</p>
-                                        <FontAwesomeIcon icon={faPencil} 
+                                    <div style={{boxShadow: 'rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;'}} 
+                                        onClick={() => openModal(1)} 
+                                        className='flex flex-row px-3 py-2 my-auto mr-[20px] bg-box_1-text_primary text-box_1-primary rounded-3xl cursor-pointer'>
+                                        <p className='px-2'>Editar</p>
+                                        <FontAwesomeIcon icon={faPencil}
                                             className='text-[16px]'>
                                         </FontAwesomeIcon>
                                     </div>
                                 </div>
-                                <div className='flex flex-col flex-wrap h-[150px]'>
-                                    <div className='p-3'>
+                                <div className='flex flex-col flex-wrap h-[170px]'>
+                                    <div className='p-3 flex-grow'>
                                         <h4 className='text-[16px] text-dashboard-color-info-dark'>Nombre</h4>
                                         <p className='font-[500] text-[16px]'>{user?.name}</p>
                                     </div>
-                                    <div className='p-3'>
+                                    <div className='p-3 flex-grow'>
                                         <h4 className='text-[16px] text-dashboard-color-info-dark'>Correo</h4>
                                         <p className='font-[500] text-[16px]'>{user?.email}</p>
                                     </div>
-                                    <div className='p-3'>
+                                    <div className='p-3 flex-grow'>
                                         <h4 className='text-[16px] text-dashboard-color-info-dark'>Apellido</h4>
                                         <p className='font-[500] text-[16px]'>{user?.lastName}</p>
                                     </div>
-                                    <div className='p-3'>
+                                    <div className='p-3 flex-grow'>
                                         <h4 className='text-[16px] text-dashboard-color-info-dark'>Nombre de usuario</h4>
                                         <p className='font-[500] text-[16px]'>{user?.username}</p>
                                     </div>
-                                    <div className='p-3'>
+                                    <div className='p-3 flex-grow'>
                                         <h4 className='text-[16px] text-dashboard-color-info-dark'>Contraseña</h4>
                                         <p className='font-[500] text-[16px]'>**********</p>
-                                    </div>
-                                    <div className='p-3'>
-                                        <h4 className='text-[16px] text-dashboard-color-info-dark'>Logo</h4>
-                                        <p className='font-[500] text-[16px]'>{user?.logoUrl}</p>
                                     </div>
                                 </div>
                             </div>
 
-                            { /* more info address information */}
-                            <div className='ml-[5px] mt-[50px] w-[700px] h-max border-[1px] border-solid border-gray-300 rounded-xl'>
+                            { /* Dirección */}
+                            <div style={{boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;'}} className='ml-[5px] mt-[50px] w-[700px] h-max border-[1px] border-solid border-box_1-secondary rounded-xl'>
                                 <div className='flex justify-between mt-[20px] ml-[15px]'>
                                     <h3 className='font-[800] text-[17px]'>Dirección</h3>
-                                    <div onClick={() => openModal(2)} className='flex flex-row px-3 py-2 my-auto mr-[20px] border-[1px] border-solid border-gray-300 rounded-3xl cursor-pointer'>
-                                        <p className='px-2'>Edit</p>
+                                    <div style={{boxShadow: 'rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;'}} 
+                                        onClick={() => openModal(2)} 
+                                        className='flex flex-row px-3 py-2 my-auto mr-[20px] bg-box_1-text_primary text-box_1-primary rounded-3xl cursor-pointer'>
+                                        <p className='px-2'>Editar</p>
                                         <FontAwesomeIcon icon={faPencil} 
                                             className='text-[16px]'>
                                         </FontAwesomeIcon>
@@ -458,12 +487,14 @@ export default function DashboardProfile() {
                                 </div>
                             </div>
 
-                            { /* more brand information */}
-                            <div className='transition-all duration-300 ease-in mr-[300px] mt-[90px] w-[600px] h-max border-[1px] border-solid border-gray-300 rounded-xl'>
+                            { /* Marca */}
+                            <div style={{boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;'}} className='mr-[80px] mt-[250px] w-[700px] h-max transition-all duration-300 ease-in border-[1px] border-solid border-gray-300 rounded-xl'>
                                 <div className='flex justify-between mt-[20px] ml-[15px]'>
                                     <h3 className='font-[800] text-[17px]'>Marca</h3>
-                                    <div onClick={() => openModal(3)} className='flex flex-row px-3 py-2 my-auto mr-[20px] border-[1px] border-solid border-gray-300 rounded-3xl cursor-pointer'>
-                                        <p className='px-2'>Edit</p>
+                                    <div style={{boxShadow: 'rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;'}} 
+                                        onClick={() => openModal(3)} 
+                                        className='flex flex-row px-3 py-2 my-auto mr-[20px] bg-box_1-text_primary text-box_1-primary rounded-3xl cursor-pointer'>
+                                        <p className='px-2'>Editar</p>
                                         <FontAwesomeIcon icon={faPencil} 
                                             className='text-[16px]'>
                                         </FontAwesomeIcon>
@@ -505,6 +536,22 @@ export default function DashboardProfile() {
                         autoClose={2000}
                         position="bottom-center" 
                     />
+
+                    { userLoading &&
+                        <Spinner
+                            width='50px'
+                            height='50px'
+                            bottom='50px'
+                        />
+                    }
+
+                    { showroomLoading &&
+                        <Spinner
+                            width='50px'
+                            height='50px'
+                            bottom='50px'
+                        />
+                    }
                 </div>
         </main>
     )

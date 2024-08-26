@@ -4,7 +4,6 @@ import { User } from '@/types/user.types';
 
 const getUser = async (username: string) => {
     try {
-        console.log(username)
         const response = await axiosJsonInstance.post('/user/username', {username});
         return response.data;
     } catch (error) {

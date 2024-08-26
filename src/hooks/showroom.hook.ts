@@ -15,11 +15,14 @@ export const useShowroomHook = () => {
         try {
             setShowroomLoading(true)
             const resServ = await showroomService.updateShowroom(showroom,idShowroom)
+            if(resServ.error === false){
+                //[ ]ACTUALIZAMOS EL SHOWROOM
+                setShowroom(resServ.data)
+            }
             return resServ
         } catch (err) {
             const error = err as CustomError             
             setShowroomError(error)
-            console.log(err)
         } finally {
             setShowroomLoading(false)
         }
@@ -35,7 +38,6 @@ export const useShowroomHook = () => {
             } catch (err) {
                 const error = err as CustomError             
                 setShowroomError(error)
-                console.log(err)
             } finally {
                 setShowroomLoading(false)
             }

@@ -1,5 +1,5 @@
 export const firstNameConfig = {
-    label: 'First Name',
+    label: 'Nombre',
     name: 'firstName',
     type: 'text',
     id: 'firstName',
@@ -7,7 +7,7 @@ export const firstNameConfig = {
 }
 
 export const lastNameConfig = {
-    label: 'Last Name',
+    label: 'Apellido',
     name: 'lastName',
     type: 'text',
     id: 'lastName',
@@ -15,7 +15,7 @@ export const lastNameConfig = {
 }
 
 export const emailConfig = {
-    label: 'Email',
+    label: 'Mail',
     name: 'email',
     type: 'email',
     id: 'email',
@@ -23,7 +23,7 @@ export const emailConfig = {
 }
 
 export const usernameConfig = {
-    label: 'Username',
+    label: 'Nombre de usuario',
     name: 'username',
     type: 'text',
     id: 'username',
@@ -31,14 +31,14 @@ export const usernameConfig = {
 }
 
 export const passwordConfig = {
-    label: 'Password',
+    label: 'Contraseña',
     name: 'password',
     id: 'password',
     placeholder: 'Enter your password',
 }
 
 export const repeatPasswordConfig = {
-    label: 'Repeat Password',
+    label: 'Repite la contraseña',
     name: 'repeatPassword',
     id: 'repeatPassword',
     placeholder: 'Repeat Password',
@@ -47,7 +47,7 @@ export const repeatPasswordConfig = {
 
 //[ ] SETTINGS / UPDATE
 export const nameConfig = {
-    label: 'Name',
+    label: 'Nombre',
     name: 'name',
     type: 'text',
     id: 'name',
@@ -55,7 +55,7 @@ export const nameConfig = {
 }
 
 export const showroomNameConfig = {
-    label: 'Name',
+    label: 'Nombre de la marca',
     name: 'showroomName',
     type: 'text',
     id: 'showroomName',
@@ -63,7 +63,7 @@ export const showroomNameConfig = {
 }
 
 export const countryConfig = {
-    label: 'Country',
+    label: 'País',
     name: 'country',
     type: 'text',
     id: 'country',
@@ -71,7 +71,7 @@ export const countryConfig = {
 }
 
 export const cityConfig = {
-    label: 'City',
+    label: 'Ciudad',
     name: 'city',
     type: 'text',
     id: 'city',
@@ -79,7 +79,7 @@ export const cityConfig = {
 }
 
 export const phoneNumberConfig = {
-    label: 'Phone Number',
+    label: 'Teléfono',
     name: 'phoneNumber',
     type: 'text',
     id: 'phoneNumber',
@@ -87,7 +87,7 @@ export const phoneNumberConfig = {
 }
 
 export const postalCodeConfig = {
-    label: 'Postal Code',
+    label: 'Código Postal',
     name: 'postalCode',
     type: 'text',
     id: 'postalCode',
@@ -95,7 +95,7 @@ export const postalCodeConfig = {
 }
 
 export const titleAboutConfig = {
-    label: 'Title',
+    label: 'Título',
     name: 'titleAbout',
     type: 'text',
     id: 'titleAbout',
@@ -103,7 +103,7 @@ export const titleAboutConfig = {
 }
 
 export const descriptionConfig = {
-    label: 'Description',
+    label: 'Descripción',
     name: 'description',
     type: 'text',
     id: 'description',
@@ -111,8 +111,8 @@ export const descriptionConfig = {
 }
 
 export const historyAboutConfig = {
-    label: 'History',
-    name: 'name',
+    label: 'Historia',
+    name: 'historyAbout',
     type: 'text',
     id: 'historyAbout',
     placeholder: 'Enter your History About',
