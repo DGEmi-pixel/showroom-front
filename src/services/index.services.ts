@@ -1,9 +1,10 @@
 import axios from 'axios'
 import Cookies from 'universal-cookie'
 
+
 // TOKEN
 const cookies = new Cookies()
-const authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NjRhN2YyNGM1MDgxZjc1OTgyYmFkYyIsInVzZXJuYW1lIjoiZWRpYXoiLCJlbWFpbCI6ImVtaWRpYXo4NzlAZ21haWwuY29tIiwiaWF0IjoxNzE5Njg4MjEwfQ.GDp-XVHgXhuNoFWkAdxN5-9XdBj367MDG4kdgn73Rcc'
+const authToken = cookies.get('authToken')
 
 // INSTANCIA
 export const axiosJsonInstance  = axios.create({

@@ -210,7 +210,7 @@ export default function DashboardProducts() {
             [name]: value,
         }));
 
-        //[ ] Si el input es el del descuento o el precio se llama a al función para calcular el precio final que verá el usuario
+        //[ ] Si el input es el del descuento o el precio se llama a la función para calcular el precio final que verá el usuario
         if(e.target.name === 'price' || e.target.name === 'discount') {
             //[ ] Obtenemos los valores actuales de los campos price y discount
             const price = name === 'price' ? Number(value) : Number(productModalData.price);
@@ -396,7 +396,7 @@ export default function DashboardProducts() {
         if(selectedProducts.length > 0){ 
             MySwal.fire({
                 title: '¡Está eliminado varios productos!',
-                html: `<div class="custom-swal-text">Esta acción no puede desacerse </div>`,
+                html: `<div class="custom-swal-text">Esta acción no puede deshacerse </div>`,
                 showCancelButton: true,
                 confirmButtonText: 'Sí',
                 cancelButtonText: 'No, cancelar',
@@ -482,8 +482,7 @@ export default function DashboardProducts() {
 
     useEffect(() => {
         Modal.setAppElement('#rootmodal')
-        console.log(productLoading)
-    }, [products, productModalData, productLoading])
+    }, [products, productModalData])
 
     return(
         <main className='text-[14px] w-[100vw] h-[100vh] bg-box_1-secondary select-none overflow-x-hidden
@@ -533,7 +532,7 @@ export default function DashboardProducts() {
                                     beforeClose: 'ModalContent--before-close',
                                 }}
                                 closeTimeoutMS={300}
-                                contentLabel="Example Modal"
+                                contentLabel="Products Modal"
                             >
                                 
                                 <h2 className='text-box_1-text_primary font-bold text-[18px] ml-[35px]'>{modalTitle}</h2>

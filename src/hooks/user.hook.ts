@@ -21,6 +21,11 @@ export const useUserHook = () => {
         try {
             setUserLoading(true)
             const resServ = await userService.updateUser(user,userId)
+            if(resServ.error === false){
+
+                //[ ] ACTUALIZAMOS EL USUARIO
+                setUser(resServ.data)
+            }
             return resServ
         } catch (err) {
             const error = err as CustomError             
@@ -41,7 +46,6 @@ export const useUserHook = () => {
             } catch (err) {
                 const error = err as CustomError             
                 setUserError(error)
-                console.log(err)
             } finally {
                 setUserLoading(false)
             }

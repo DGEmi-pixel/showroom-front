@@ -19,7 +19,7 @@ export const schemas = {
     phoneNumber: yup.string().required('Debe ingresar un teléfono válido').min(9).max(25).matches(/^[0-9-\s]*$/, 'El formato del teléfono no es válido. Debe ser en el formato: código de área - número. Ejemplo: 2964-4567890'),
     postalCode: yup.string().required('Debe ingresar un CPA válido').min(4).max(20).matches(/^[0-9a-zA-ZáéíóúÁÉÍÓÚ\s]*$/, 'Ingrese un CPA válido'),
     titleAbout: yup.string().required('Campo requerido').min(4, 'Mínimo 4 caracteres').max(30, 'Máximo 30 caracteres').matches(/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ&-\s]*$/, 'El título solo debe contener texto'),
-    historyAbout: yup.string().required('Campo requerido').min(4, 'Mínimo 4 caracteres').max(254).matches(/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]*$/, 'La historia solo debe contener texto'),
+    historyAbout: yup.string().required('Campo requerido').min(4, 'Mínimo 4 caracteres').max(200, 'Máximo 200 caracteres').matches(/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]*$/, 'La historia solo debe contener texto'),
 
     //[ ] PRODUCTS
     price: yup.number().typeError("Debe ingresar un número").required('Campo requerido').min(1, 'El precio debe ser mayor a cero').max(9999999),
