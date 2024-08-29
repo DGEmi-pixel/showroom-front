@@ -264,15 +264,17 @@ export const Sidebar: React.FC<Sidebar> = ({brandCount, products, isOpen, toggle
                 </div>
 
                 <span className="block ml-4 mt-10 text-base font-medium text-box_1-bgSecondary">Marca</span>
-                <div className="ml-4 mt-4 flex flex-col">
-                    {Object.entries(brandCount).map(([brand, count]) => (
-                        <p
-                            key={brand}
-                            onClick={() => handleBrandChange({brand})} 
-                            className={`${activeBrand === brand ? 'text-box_1-text_primary font-semibold' : ''} text-sm cursor-pointer`}>{brand} 
-                            <span className={`${activeBrand === brand ? 'text-box_1-text_primary font-semibold' : 'text-box_1-text_primary'}`}> ({count})</span>
-                        </p>
-                    ))}
+                <div className="w-[200px] h-[80px] ml-4 mt-4 overflow-y-scroll scrollbar-custom">
+                    <div className='h-auto w-[180px] flex flex-wrap flex-row'>
+                        {Object.entries(brandCount).map(([brand, count]) => (
+                            <p
+                                key={brand}
+                                onClick={() => handleBrandChange({brand})} 
+                                className={`${activeBrand === brand ? 'text-box_1-text_primary font-semibold' : ''} mx-1 text-sm cursor-pointer`}>{brand} 
+                                <span className={`${activeBrand === brand ? 'text-box_1-text_primary font-semibold' : 'text-box_1-text_primary'}`}> ({count})</span>
+                            </p>
+                        ))}
+                    </div>
                 </div>
             </div> 
         </aside>

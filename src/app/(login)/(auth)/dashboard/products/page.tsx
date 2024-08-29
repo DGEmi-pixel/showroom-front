@@ -50,6 +50,9 @@ import { InputError } from '@/components/toolTipError';
 //[ ] SPINNER
 import { Spinner } from '@/components/spinner';
 
+//[ ] LOADING PLACEHOLDER
+import { LoadingPlaceHolder } from '@/components/loadingPlaceholder';
+
 const customStyles = {
     content: {
         top: '50%',
@@ -764,6 +767,9 @@ export default function DashboardProducts() {
                                     {/** Body */}
                                     {Array.isArray(currentProducts) && currentProducts.length > 0 ?
                                         currentProducts.map((product, index) => (
+                                            productLoading ? (
+                                                <LoadingPlaceHolder key={product.id}/>
+                                            ) : (
                                             <div key={product.id} className='flex items-center p-6 mt-[20px] rounded-xl bg-white'>
                                                 <label className='flex-1 space-x-3 inline-flex items-center cursor-pointer'>
                                                     <input
@@ -815,7 +821,8 @@ export default function DashboardProducts() {
                                                             className='text-[16px]'/>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> 
+                                            )
                                         )) : 
                                         <div className='flex items-center mx-auto w-[200px] p-4 mt-[30px] bg-gray-400 rounded-lg'>
                                             <p className='text-lg text-black'>No hay existencias</p>

@@ -14,7 +14,7 @@ export const useProductHook = () => {
     const [productError, setProductError] = useState<CustomError | null>(null);
     const [brandCount, setBrandCount] = useState<BrandCount>({});
     const [currentPage, setCurrentPage] = useState(1);
-    const [productsPerPage] = useState(4);
+    const [productsPerPage] = useState(8);
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [currentProducts, setCurrentProducts] = useState<Product[]>([]);
     const [filters, setFilters] = useState<Filter>({});
