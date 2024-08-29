@@ -1,6 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('../styles/colors.css');
+@import url('../styles/animations.css');
 
 
 /*TODO: Eliminar Arrows/Spinner de los input*/
@@ -28,6 +30,24 @@ textarea::-webkit-scrollbar-thumb {
 input[type=number], input[type=checkbox] {
     appearance: none;
     -moz-appearance: textfield;
+}
+
+
+/*TODO: SCROLLBAR*/
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: #6c63ff; /* Color de fondo del track (canal) */
+}
+
+.scrollbar-custom::-webkit-scrollbar-button {
+  background-color: #fff !important; /* Color de las flechas */
+  height: 25px;
+}
+
+/* Personalización para Firefox */
+.scrollbar-custom {
+  scrollbar-width: 14px; /* Tamaño del scrollbar */
+  scrollbar-color: #fff #6c63ff !important; /* thumb color y track color */
 }
 
 /* Añadir estilos personalizados */
@@ -116,12 +136,6 @@ input[type=number], input[type=checkbox] {
 .ModalContent--before-close {
   animation-name: modalFadeOut;
 }
-  
-
-
-  /*DESDE OTRO LAS*/
-@import url('../styles/colors.css');
-@import url('../styles/animations.css');
 
 
 /*TODO: Eliminar Arrows/Spinner de los input*/
