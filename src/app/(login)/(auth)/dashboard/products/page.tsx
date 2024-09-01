@@ -504,8 +504,8 @@ export default function DashboardProducts() {
                                         className='mx-auto relative max-w-20 rounded-[16px]'>
                                     </Image>
                                 </div>
-                                <h2 className='text-box_1-bgSecondary text-[1.4rem] ml-16'>M&<span className='danger text-box_1-text_primary'>M</span></h2>
-                            </div>
+                                <h2 className='text-box_1-bgSecondary text-[1.4rem] text-center ml-[70px]'>M<span className='text-box_1-text_primary'>N</span></h2>
+                                </div>
                             <div className='close-btn hidden'>
                                 <FontAwesomeIcon icon={faXmark}></FontAwesomeIcon>
                             </div>

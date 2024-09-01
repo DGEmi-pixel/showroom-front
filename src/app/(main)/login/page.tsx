@@ -19,11 +19,10 @@ export default function Home() {
 return (
     <main className="relative w-screen h-screen py-10 flex flex-col items-center bg-gradient-to-r from-[#f1f2f6] to-[#ced6e0]">
         <div className="absolute z-[1] top-[40px] left-[47%] w-[120px] h-[80px] bg-gray-100 rounded-b-3xl shadow-lg shadow-gray-300">
-
         </div>
         <div className="relative bg-white mx-auto flex flex-col w-[200px] md:w-1/2 h-full items-center rounded-lg shadow-lg shadow-gray-400">
             <h2 className={` ${poppins.className} z-[2] mt-[20px] text-violet-800 font-extralight text-[30px]`}>
-                M&<span className={` text-violet-400`}>N</span>
+                M<span className={` text-violet-400`}>N</span>
             </h2>
             <span className={`${lora.className} mt-[50px] text-[20px]`}>&ldquo; Un negocio en familia&rdquo; </span>
             <div className="flex flex-col w-96 h-3/4 justify-center items-center">
