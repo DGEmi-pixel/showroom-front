@@ -92,9 +92,6 @@ export default function Home() {
                 {/*-------------Home----------------------*/}
                 <section id="home" ref={homeRef} className="relative w-[100%] min-h-[100vh] p-[100px] flex justify-between items-center">
                     <div className={`absolute top-0 left-0 w-[100%] h-[100%] bg-box_1-text_primary clip-circle z-[0]`}></div>
-                    
-                    
-
                     <div className="relative -mt-[250px] w-[100%] flex justify-between items-center">
                         <div className="relative max-w-[600px]">
                             <h2 className="slideFromLeft text-[4em] color-[#333] leading-[1.4em] font-medium">Showroom
@@ -131,7 +128,7 @@ export default function Home() {
                         <Image src={adidas} className="mobile:mb-10 scale-in-center w-[580px] max-w-[100%] h-auto px-0 py-[10px]" alt="family"/>
                         <div className="mobile:text-center mobile:-mt-[100px]  w-[600px] max-w-[100%] px-0 py-[10px]">
                             <h4 className={`${roboto.className} slideFromLeft text-[18px] text-[#777777] tracking-widest mb-[10px]`}>Un poco de contexto</h4>
-                            <h1 className="mobile:text-[45px] slideFromRight text-[65px] text-[#111111] font-bold mb-[20px]">De Familia a Moda <span className="text-box_1-text_primary">M&N</span></h1>
+                            <h1 className="mobile:text-[45px] slideFromRight text-[65px] text-[#111111] font-bold mb-[20px]">De Familia a Moda <span className="text-box_1-text_primary">{homeData?.name}</span></h1>
                             <p className={`${roboto.className} text-focus-in text-[16px] color-[#777777] leading-[30px] mb-[30px]`}>
                                 {about?.historyAbout}
                             </p>

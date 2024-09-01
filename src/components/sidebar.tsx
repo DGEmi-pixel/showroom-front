@@ -144,7 +144,7 @@ export const Sidebar: React.FC<Sidebar> = ({brandCount, products, isOpen, toggle
                                 : null
                         }
                     </div>
-                    <h2 className='text-box_1-bgSecondary text-[1.4rem] ml-16'>M&<span className='text-box_1-text_primary'>M</span></h2>
+                    <h2 className='text-box_1-bgSecondary text-[1.4rem] text-center ml-[70px]'>M<span className='text-box_1-text_primary'>N</span></h2>
                 </div>
                 <div className='close-btn hidden'>
                     <FontAwesomeIcon icon={faXmark}></FontAwesomeIcon>
