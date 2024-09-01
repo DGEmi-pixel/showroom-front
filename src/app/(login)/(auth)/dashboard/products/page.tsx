@@ -79,7 +79,7 @@ export default function DashboardProducts() {
 
     //[ ] HOOKS
     const { products, brandCount, applyFilters, createProduct, updateProduct, removeProduct, removeManyProducts, checkedStates, setCheckedStates, 
-        productLoading, productError, currentProducts, currentPage, 
+        productLoading, firstLoadProduct, productError, currentProducts, currentPage, 
         productsPerPage, setCurrentPage } = useProductHook()
 
     const [productModalData, setProductModalData] = useState<ProductModal>({
@@ -763,13 +763,15 @@ export default function DashboardProducts() {
                                         <p className='flex-1 text-[14px] text-center uppercase text-gray-400'>descuento</p>
                                         <p className='flex-1 text-[14px] text-center uppercase text-gray-400'>operación</p>
                                     </div>
-
-                                    {/** Body */}
-                                    {Array.isArray(currentProducts) && currentProducts.length > 0 ?
+                                    
+                                    {firstLoadProduct ? (
+                                        <LoadingPlaceHolder />
+                                    ): !Array.isArray(currentProducts) || currentProducts.length === 0 ? (
+                                        <div className='flex items-center mx-auto w-[200px] p-4 mt-[30px] bg-gray-400 rounded-lg'>
+                                            <p className='text-lg text-black'>No hay existencias</p>
+                                        </div>
+                                    ) :
                                         currentProducts.map((product, index) => (
-                                            productLoading ? (
-                                                <LoadingPlaceHolder key={product.id}/>
-                                            ) : (
                                             <div key={product.id} className='flex items-center p-6 mt-[20px] rounded-xl bg-white'>
                                                 <label className='flex-1 space-x-3 inline-flex items-center cursor-pointer'>
                                                     <input
@@ -822,12 +824,9 @@ export default function DashboardProducts() {
                                                     </div>
                                                 </div>
                                             </div> 
-                                            )
-                                        )) : 
-                                        <div className='flex items-center mx-auto w-[200px] p-4 mt-[30px] bg-gray-400 rounded-lg'>
-                                            <p className='text-lg text-black'>No hay existencias</p>
-                                        </div>
-                                    }
+                                        )
+                                    )}
+
                                     {/*[ ] PAGINACIÓN */}
                                     <div style={{
                                                 position: isPaginationFixed ? 'fixed' : 'relative',

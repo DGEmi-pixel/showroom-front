@@ -10,6 +10,7 @@ import { Filter } from '@/types/product.types';
 export const useProductHook = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [productLoading, setProductLoading] = useState(true);
+    const [firstLoadProduct, setFirstLoadProduct] = useState(true);
     const [productMessage, setProductMessage] = useState<CustomMessage>();
     const [productError, setProductError] = useState<CustomError | null>(null);
     const [brandCount, setBrandCount] = useState<BrandCount>({});
@@ -24,19 +25,24 @@ export const useProductHook = () => {
 
     const getAllProducts = async () => {
         try {
+            setProductLoading(true)
+            setFirstLoadProduct(true)
             //[ ] INDICAMOS QUE EL OBJETO RECIBIDO SERÁ DE TIPO SERVER PRODUCT
             const productData: ServerProduct[] = await productService.getAllProducts()
             setCheckedStates(initilCheckedStates(productData))
             setProducts(productData.map(transformProduct))  //MAPEAMOS LAS PROPIEDADES
             setFilteredProducts(productData.map(transformProduct))
-            setProductLoading(false)
             const countedBrands = countBrands(productData.map(transformProduct))
             setBrandCount(countedBrands)
         } catch (err) {
             const error = err as CustomError;
             setProductError(error)
             setProductLoading(false)
+            setFirstLoadProduct(false)
             console.log(err)
+        } finally {
+            setProductLoading(false)
+            setFirstLoadProduct(false)
         }
     };
 
@@ -46,8 +52,9 @@ export const useProductHook = () => {
             const resServ = await productService.createProduct(productData)
             if(resServ.error === false){
                 
+                const transformedProduct = transformProduct(resServ.data);
                 //[ ] ACTUALIZAMOS LOS FILTROS APLICADOS Y LOS PRODUCTOS
-                setProducts(prevProducts => [...prevProducts, resServ.data]);
+                setProducts(prevProducts => [...prevProducts, transformedProduct]);
                 setFilteredProducts(prevFiltered => [...prevFiltered, resServ.data]);
                 setCurrentProducts(prevCurrent => [...prevCurrent, resServ.data]);
             }
@@ -220,5 +227,5 @@ export const useProductHook = () => {
     }, [currentPage, productsPerPage, applyFilters, filters]);
 
     return { products, createProduct, updateProduct, removeProduct, removeManyProducts, checkedStates,setCheckedStates, 
-        productLoading, productError, brandCount, currentProducts, productsPerPage, currentPage, setCurrentPage, applyFilters };
+        productLoading,firstLoadProduct, productError, brandCount, currentProducts, productsPerPage, currentPage, setCurrentPage, applyFilters };
 };
