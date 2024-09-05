@@ -35,7 +35,7 @@ export const ColorList: React.FC<ColorListProps> = ({ colors, onDragStart, onDra
                     onDragEnd={(event) => handleDragEnd(event, color)}
                     style={{ 
                         backgroundColor: color, 
-                        borderColor: color, 
+                        borderColor: isLightColor(color) ? '#000' : '#FFF', 
                         borderWidth: '1px', 
                         borderStyle: 'solid',
                     }}

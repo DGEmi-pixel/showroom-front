@@ -1,5 +1,5 @@
 "use client";
-import React, { ChangeEvent } from 'react'
+import React from 'react'
 import Image from 'next/image'
 import logo from '../../../../../../public/img/logo/Logo.jpg'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -18,7 +18,7 @@ import '@/styles/alerts.css'
 import 'react-toastify/dist/ReactToastify.css';
 import { toast, Zoom, Bounce, Flip, ToastContainer } from 'react-toastify';
 
-import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+import { FormProvider, useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ProductModalFormValues } from '@/types/form.types';
 import { productModalSchema } from '@/schemas/form.schema';
@@ -130,7 +130,14 @@ export default function DashboardProducts() {
     const [operationNumber, setOperationNumber] = useState<number>(0)
 
     //[ ] MÉTODO DEL PRODUCT MODAL
-    const methods = useForm<ProductModalFormValues>({ resolver: yupResolver(productModalSchema) })
+    // const methods = useForm<ProductModalFormValues>({ resolver: yupResolver(productModalSchema) })
+    const methods = useForm<ProductModalFormValues>({
+        resolver: yupResolver(productModalSchema),
+        defaultValues: {
+            colors: productModalData?.colors || [], // Valor inicial para colors
+            sizes: productModalData?.size || []
+        },
+    });
 
     //[ ] MODAL
     const [modalIsOpen, setIsOpen] = useState(false);
@@ -142,6 +149,11 @@ export default function DashboardProducts() {
         switch(opNumber)
         {
             case 0: //ADD
+
+                methods.reset({
+                    colors: [], // Asegúrate de limpiar el array de colores
+                });
+
                 setIsOpen(true)
                 setModalTitle("Agregar nuevo producto")
 
@@ -163,6 +175,12 @@ export default function DashboardProducts() {
                     setSeason(productFound.season)
                     setArrayClothSizes(productFound.size)
                     setColors(productFound.colors)
+
+                     // Actualiza los valores del formulario usando `reset`
+                    methods.reset({
+                        colors: productFound.colors,
+                        sizes: productFound.size
+                    });
 
                     setProductModalData({
                         id: productFound.id,
@@ -306,21 +324,27 @@ export default function DashboardProducts() {
     const [colors, setColors] = useState<string[]>([]);
     
     const handleColorChange = (newColor: string) => {
+        //Actualiza el color localmente
         setColor(newColor);
-        //[ ] ACTUALIZAMOS LA PROP COLORS DEL Objeto ProductModalData
-        const lastArray = [...colors];
-        if (!lastArray.includes(newColor)) {
-            lastArray.push(newColor);
+
+        // Actualiza el array de colores si el nuevo color no está ya presente
+        if (!colors.includes(newColor)) {
+            const updatedColors = [...colors, newColor];
+            setColors(updatedColors);
+
+            // Actualiza el estado en react-hook-form
+            methods.setValue('colors', updatedColors);
         }
-        setColors(lastArray)
     };
 
     const handleAddColor = (newColors: string[]) => {
+        //Actualiza el estado local
         setColors(newColors);
 
-        //TODO: ACTUALIZAR EL ESTADO DE COLORS EN EL FORM STATE
-        methods.setValue('colors', newColors)
-        methods.trigger('colors'); //TRIGGER PARA FORZAR LA VALIDACIÓN
+        // Actualiza el estado en react-hook-form
+        methods.setValue('colors', newColors);
+
+        methods.trigger('colors')
     };
 
 
@@ -485,7 +509,7 @@ export default function DashboardProducts() {
 
     useEffect(() => {
         Modal.setAppElement('#rootmodal')
-    }, [products, productModalData])
+    }, [products, methods])
 
     return(
         <main className='text-[14px] w-[100vw] h-[100vh] bg-box_1-secondary select-none overflow-x-hidden
@@ -625,8 +649,24 @@ export default function DashboardProducts() {
                                                     <div className='flex flex-col'>
                                                         <label className='text-sm'>Colores Disponibles</label>
                                                         {/* [ ] PICKER COLOR COMPONENT */}
+                                                        {/*<ColorPicker value='#ffffff' onAddColor={handleAddColor} onChange={handleColorChange} originalArray={colors}/> */}
                                                         <div className='relative'>
-                                                            <ColorPicker value='#ffffff' onAddColor={handleAddColor} onChange={handleColorChange} originalArray={colors}/>
+                                                            <Controller
+                                                                name="colors"
+                                                                control={methods.control}
+                                                                render={({ field }) => (
+                                                                    <ColorPicker
+                                                                        value={field.value[0]} // Array de colores actual
+                                                                        onChange={(color) => {
+                                                                            handleColorChange(color);
+                                                                        }}
+                                                                        onAddColor={(colors) => {
+                                                                            handleAddColor(colors);
+                                                                        }}
+                                                                        originalArray={field.value}
+                                                                    />
+                                                                )}
+                                                            />
                                                             {methods.formState.errors.colors && (
                                                                 <div className='absolute left-0 top-[60px] w-full mt-0 z-40 slide-bottom'>
                                                                     <InputError
