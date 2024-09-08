@@ -4,7 +4,7 @@ export interface Contact {
     country: string,
     socialMedia: {
         facebook: string,
-        twitter: string,
+        whatsapp: string,
         instagram: string
     }
 }

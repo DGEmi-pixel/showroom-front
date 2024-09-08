@@ -7,9 +7,9 @@ import { ShowCard } from "@/components/showCard";
 import { Navbar } from "@/components/navbar";
 
 import { poppins,dosis,roboto } from "@/styles/fonts/font"
-import { faEnvelope, faLocationDot, faPhone, } from "@fortawesome/free-solid-svg-icons"
+import { faEnvelope, faLocationDot, faPhone } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faFacebook, faInstagram, faLinkedin, faTwitter } from "@fortawesome/free-brands-svg-icons"
+import { faFacebook, faInstagram, faWhatsapp, faTwitter } from "@fortawesome/free-brands-svg-icons"
 
 /* HOOKS */
 import useIntersectionObserver from "@/hooks/hook.interactionObserver"
@@ -195,9 +195,9 @@ export default function Home() {
                                     hover:translate-y-[-5px] hover:bg-out-prestigeBlue hover:text-box_1-text_primary hover:border-[1px] hover:border-[solid] hover:border-box_1-text_primary">
                                     <FontAwesomeIcon icon={faInstagram} className="text-[#fff] text-[18px] border-[1px] border-solid border-[transparent] delay-100"/>
                                 </a>
-                                <a href={`${contactInfo?.socialMedia.twitter}`} className="w-[35px] h-[35px] mr-[12px] rounded-[5px] bg-box_1-text_primary duration-100 flex items-center justify-center
+                                <a href={`${contactInfo?.socialMedia.whatsapp}`} className="w-[35px] h-[35px] mr-[12px] rounded-[5px] bg-box_1-text_primary duration-100 flex items-center justify-center
                                     hover:translate-y-[-5px] hover:bg-out-prestigeBlue hover:text-box_1-text_primary hover:border-[1px] hover:border-[solid] hover:border-box_1-text_primary">
-                                    <FontAwesomeIcon icon={faTwitter} className="text-[#fff] text-[18px] border-[1px] border-solid border-[transparent] delay-100"/>
+                                    <FontAwesomeIcon icon={faWhatsapp} className="text-[#fff] text-[18px] border-[1px] border-solid border-[transparent] delay-100"/>
                                 </a>
                             </div>
                         </section>
