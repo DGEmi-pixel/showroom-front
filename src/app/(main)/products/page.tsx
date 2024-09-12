@@ -38,7 +38,10 @@ export default function Products() {
             { Array.isArray(currentProducts) && currentProducts.length > 0 ?
 
                 currentProducts.map(product => (
-                    <ProductCard name={product.name} 
+                    <ProductCard 
+                                name={product.name}
+                                brand={product.brand}
+                                imageUrl={product.imageUrl}
                                 sizesAvailable={product.size} 
                                 price={product.price} 
                                 availableColours={product.colors} 

@@ -104,7 +104,8 @@ const config: Config = {
         'dashboard-input-shadow_2': 'rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;',
         'dashboard-input-shadow_3': 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px',
         'dashboard-input-shadow_4': '5px 15px 25px rgba(0, 0 ,0, 0.35)',
-        'dashboard-modal-button-shadow': '0 2px 10px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.1)'
+        'dashboard-modal-button-shadow': '0 2px 10px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.1)',
+        'products-card-shadow_1': '0px 4px 8px rgba(0, 0, 0, 0.1)',
       },
 
       transitionProperty: {

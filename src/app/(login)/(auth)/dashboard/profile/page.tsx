@@ -255,7 +255,6 @@ export default function DashboardProfile() {
             setDescriptionCardHeight(descriptionHeight)
             setHistoryCardHeight(historyHeight)
         }
-        console.log(showroom)
         Modal.setAppElement('#rootmodal')
     }, [showroom, showroom?.description, showroom?.historyAbout])
 
