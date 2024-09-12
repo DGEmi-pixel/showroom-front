@@ -9,7 +9,10 @@ import adidas02 from '../../public/img/adidas02.png';
 import adidas03 from '../../public/img/adidas03.png';
 import { ProductCardProps } from "@/types/product.types";
 
-export const ProductCard: React.FC<ProductCardProps> = ({name, sizesAvailable, price, availableColours}) => {
+//FUENTE PARA EL TEXTO DEL TÍTULO
+import { montserrat, raleway, poppins } from '@/styles/fonts/font'
+
+export const ProductCard: React.FC<ProductCardProps> = ({name, brand, imageUrl, sizesAvailable, price, availableColours}) => {
 
     // Define el tipo opcional para activeIndex
     type ActiveIndexType = number | null;
@@ -73,27 +76,34 @@ export const ProductCard: React.FC<ProductCardProps> = ({name, sizesAvailable, p
     };
 
     useEffect(() => {
-        setDynamicCardHeight(450 + (sizesAvailable.length * 40));
+        setDynamicCardHeight(480 + (sizesAvailable.length * 40));
     }, [sizesAvailable]);  // Dependencia al arreglo sizesAvailable
 
     return (
-        <div style={{height: dropdownEnable ? `${dynamicCardHeight}px` : '450px'}} 
+        <div style={{height: dropdownEnable ? `${dynamicCardHeight}px` : '480px'}} 
             className={`transition-all duration-300 ease-in-out bg-slate-50
             overflow-hidden ml-10 mt-10 max-w-[350px] w-[100%] shadow-xl rounded-3xl pt-5 pr-8 pb-8 pl-8`}>
             <div className="flex items-center justify-between">
-                <Image src={adidas} alt="Adidas" width={60} height={60} 
-                className="object-cover h-[50px] w-[50px]"></Image>
-                <FontAwesomeIcon icon={faShoppingBag} className={`size-6 text-[#707070] transition-colors duration-75 cursor-pointer hover:text-[#333]`}/>
+                <span 
+                    className={`${raleway.className}text-[#707070] text-lg mb-2 italic`}>{brand}
+                </span>
+                <FontAwesomeIcon icon={faShoppingBag} className={`mb-2 size-6 text-[#707070] transition-colors duration-75 cursor-pointer hover:text-[#333]`}/>
             </div>
-            <div className="relative h-[210px] z-[999]">
-                <Image 
-                    className="object-cover rotate-[35deg] absolute left-12 top-[-40px] -z-10 transition-opacity ease-in"
-                    src={productImg}
+            <div className="w-[220px] h-[220px] ml-[30px] overflow-hidden 
+            bg-dashboard-color-background rounded-[10px] p-[5px] shadow-products-card-shadow_1">
+                <Image
+                    className="object-contain transition-opacity ease-in brightness-[1.1] grayscale-[0.2]"
+                    src={imageUrl}
                     alt="product image"
-                    width={250}  // Tamaño específico en pixeles
-                    height={250}
+                    width={220}  // Tamaño específico en pixeles
+                    height={220}
                     layout="fixed" // Esto mantiene las dimensiones exactas
                 />
+            </div>
+            <div className="mt-6">
+                <span 
+                    className={`${montserrat.className} ml-4 text-[18px] text-[#707070] font-medium`}>{name}
+                </span>
             </div>
             <div className="mt-2">
                 <span className="ml-4 text-[26px] font-semibold text-[#707070]">${price}</span>

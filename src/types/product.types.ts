@@ -91,9 +91,10 @@ export interface ShowCardProps {
 
 export interface ProductCardProps {
     name: string,
+    brand: string,
+    imageUrl: string,
     sizesAvailable: number[],
     price: number,
     availableColours: string[],
-
 }
 

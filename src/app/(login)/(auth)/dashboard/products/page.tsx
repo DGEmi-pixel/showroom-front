@@ -130,7 +130,6 @@ export default function DashboardProducts() {
     const [operationNumber, setOperationNumber] = useState<number>(0)
 
     //[ ] MÉTODO DEL PRODUCT MODAL
-    // const methods = useForm<ProductModalFormValues>({ resolver: yupResolver(productModalSchema) })
     const methods = useForm<ProductModalFormValues>({
         resolver: yupResolver(productModalSchema),
         defaultValues: {

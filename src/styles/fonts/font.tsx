@@ -1,4 +1,4 @@
-import { Montserrat, Roboto, Roboto_Condensed, Open_Sans, Source_Code_Pro, Inter, Poppins, Dosis, Lora } from "next/font/google"
+import { Montserrat, Roboto, Roboto_Condensed, Open_Sans, Source_Code_Pro, Inter, Poppins, Dosis, Lora, Raleway } from "next/font/google"
 
 export const montserrat = Montserrat(
     {
@@ -60,5 +60,13 @@ export const lora = Lora(
     {
         subsets: ['latin'],
         weight: ['400', '700']
+    }
+)
+
+export const raleway = Raleway(
+    {
+        subsets: ['latin'],
+        weight: ['400', '700'],
+        style: ['normal', 'italic'] // Agrega italic si es compatible
     }
 )
