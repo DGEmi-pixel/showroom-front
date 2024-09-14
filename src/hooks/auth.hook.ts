@@ -6,14 +6,14 @@ import { CustomMessage } from '@/types/messages.types'
 
 //[ ] HOOK PARA LOGEARSE
 
-export const useAuthHook = () => {
+export const useAuthHook = (rememberMe: boolean) => {
     const [authLoading, setAuthLoading] = useState(true)
     const [authError, setAuthError] = useState<CustomError | null>(null)
 
     const auth = async (authData: Login): Promise<CustomMessage | string> => {
         try {
             setAuthLoading(true)
-            const resServ = await authService.login(authData)
+            const resServ = await authService.login(authData, rememberMe)
             return resServ
         } catch (err) {
             const error = err as CustomError

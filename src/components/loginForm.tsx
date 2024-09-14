@@ -19,7 +19,13 @@ import { useAuthHook } from "@/hooks/auth.hook";
 
 export const LoginForm: React.FC<({setLoadingSpinner: (loading: boolean) => void})> = ({setLoadingSpinner}) => {
 
-    const { auth } = useAuthHook();
+    const [rememberMe, setRememberMe] = useState(false)
+
+    const handleCheckboxChange = () => {
+        setRememberMe(!rememberMe);
+    };
+
+    const { auth } = useAuthHook(rememberMe);
 
     const [showPassword, setShowPassword] = useState(false)
     const methods = useForm<LoginFormValues>({ resolver: yupResolver(loginSchema) })
@@ -49,11 +55,6 @@ export const LoginForm: React.FC<({setLoadingSpinner: (loading: boolean) => void
         }
     })
 
-    const [checked, setChecked] = useState(false);
-
-    const handleCheckboxChange = () => {
-        setChecked(!checked);
-    };
 
     return (
         // Se utiliza FormProvider para pasar los métodos de react-hook-form a los componentes hijos
@@ -87,7 +88,7 @@ export const LoginForm: React.FC<({setLoadingSpinner: (loading: boolean) => void
                             onChange={handleCheckboxChange}
                         />
                         <span className="flex items-center justify-center w-[18px] h-[18px] ml-[-18px] pointer-events-none">
-                            {checked && (
+                            {rememberMe && (
                                 <svg className="w-5 h-5 text-white fill-current" viewBox="0 0 20 20">
                                     <path d="M7.629 13.772l-3.532-3.532a1 1 0 0 1 1.414-1.414l2.118 2.118 5.586-5.586a1 1 0 1 1 1.414 1.414L8.57 13.772a1 1 0 0 1-1.414 0z"/>
                                 </svg>
