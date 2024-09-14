@@ -4,13 +4,15 @@ import { CustomMessage } from '@/types/messages.types'
 import Cookies from 'js-cookie';
 
 
-const login = async (loginData: Login): Promise<AuthResponse> => {
+const login = async (loginData: Login, rememberMe: boolean): Promise<AuthResponse> => {
 
     try {
         const resDB = await axiosJsonInstance.post('/user/login', {...loginData})
         if(resDB.data && typeof resDB.data === 'string') {
+            const expiresInDays = rememberMe ? 30 : 1
+            
             // ALMACENAR EL TOKEN EN LAS COOKIES
-            Cookies.set('authToken', resDB.data, { expires: 2});
+            Cookies.set('authToken', resDB.data, { expires: expiresInDays});
             return resDB.data //RETORNA EL TOKEN CRUDO
         } else {
             return resDB.data as CustomMessage
