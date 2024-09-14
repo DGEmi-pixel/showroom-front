@@ -811,7 +811,7 @@ export default function DashboardProducts() {
                                         </div>
                                     ) :
                                         currentProducts.map((product, index) => (
-                                            <div key={product.id} className='flex items-center p-6 mt-[20px] rounded-xl bg-white'>
+                                            <div key={product.id} className='flex items-center p-6 mt-[20px] h-[100px] rounded-xl bg-white'>
                                                 <label className='flex-1 space-x-3 inline-flex items-center cursor-pointer'>
                                                     <input
                                                         type="checkbox"
@@ -840,8 +840,8 @@ export default function DashboardProducts() {
                                                 </label>
                                                 <p className='flex-1 text-[14px] text-center uppercase text-black truncate'>{product.name}</p>
                                                 <div className='flex-1 flex justify-center items-center'>
-                                                <div className='w-[40px] h-[40px] relative'>
-                                                    <Image src={product.imageUrl} alt='imagen de mochila' objectFit='contain' layout='fill'/>
+                                                <div className='w-[70px] h-[70px] relative'>
+                                                    <Image src={product.imageUrl} alt='imagen de mochila' layout='fill'/>
                                                 </div>
                                                 </div>
                                                 <p className='flex-1 text-[14px] text-center uppercase text-black'>$ {product.price}</p>
